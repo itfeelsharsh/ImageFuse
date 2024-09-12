@@ -29,7 +29,7 @@ Follow these steps to get your development environment set up:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/imagefuse.git
+   git clone https://github.com/itfeelsharsh/imagefuse.git
    cd imagefuse
    ```
 
