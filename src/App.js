@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { storage } from './firebase';
+import { firebase, storage } from './firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { FiCheckCircle, FiUploadCloud, FiInfo } from 'react-icons/fi';
 import Modal from './Modal';
 import logo from './logo.png'; // Assume you have a logo file
 import CONFIG from './config'; // Import the configuration
+
 
 const ALLOWED_TYPES = [
   'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp', 'image/svg+xml',
