@@ -1,0 +1,68 @@
+/* Footer */
+.footer {
+    padding: 2rem 4rem; /* Increase padding for a spacious look */
+    background-color: #000000; /* Apple-like deep black background */
+    color: #ffffff; /* White text for high contrast */
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5); /* Deeper shadow for a floating effect */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    justify-content: center; /* Center the footer content horizontally */
+    align-items: center; /* Center the footer content vertically */
+}
+
+.footer-container {
+    max-width: 1200px; /* Adjust as needed */
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text inside container */
+    position: relative; /* Allows for positioning adjustments */
+    left: -10px; /* Move the container slightly to the left */
+}
+
+/* Optional: To fine-tune the positioning, you can adjust the value of `left` */
+.footer p {
+    font-size: 0.875rem; /* Consistent font size */
+    margin: 0 0 1.5rem; /* Increased margin for better spacing */
+    font-weight: 300; /* Lighter font weight for a modern look */
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem; /* Increased gap for a cleaner look */
+    justify-content: center; /* Center the links horizontally */
+    margin-top: 1.5rem; /* Increased margin for better spacing */
+}
+
+.footer-links a {
+    font-size: 0.875rem; /* Consistent font size */
+    color: #f0f0f5; /* Light grey for links */
+    text-decoration: none; /* No underline */
+    transition: color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #e0e0e5; /* Slightly lighter grey on hover */
+    transform: translateY(-2px); /* Subtle lift effect on hover */
+    opacity: 0.9; /* Slightly less opaque on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .footer {
+        padding: 1rem; /* Adjust padding for smaller screens */
+    }
+
+    .footer-links {
+        flex-direction: column; /* Stack links vertically on smaller screens */
+        gap: 0.5rem; /* Smaller gap between links */
+    }
+
+    .footer-links a {
+        font-size: 0.75rem; /* Slightly smaller font size for mobile */
+    }
+}
