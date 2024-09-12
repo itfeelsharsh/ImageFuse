@@ -262,12 +262,13 @@ body {
 
 .modal-content {
   background-color: var(--card-bg);
-  padding: 2rem;
-  border-radius: 20px;
+  padding: 1.5rem; /* Reduced padding for smaller screens */
+  border-radius: 15px; /* Slightly smaller border radius for mobile */
   box-shadow: var(--shadow-dark);
-  max-width: 500px;
+  max-width: 90%; /* Adjusted max-width */
   width: 90%;
   animation: modalFadeIn 0.3s ease-in-out;
+  box-sizing: border-box; /* Ensure padding is included in width */
 }
 
 @keyframes modalFadeIn {
@@ -282,7 +283,7 @@ body {
 }
 
 .modal-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* Adjusted font size for mobile */
   font-weight: 700;
   margin-bottom: 1rem;
   font-family: var(--font-display);
@@ -290,40 +291,49 @@ body {
 
 .modal-actions {
   display: flex;
+  flex-direction: column; /* Stack buttons vertically on mobile */
   justify-content: flex-end;
   margin-top: 1.5rem;
 }
 
 .modal-actions button {
-  margin-left: 1rem;
+  margin-top: 0.5rem; /* Adjusted margin for button stacking */
 }
 
-.file-link {
-  display: inline-block;
-  margin-top: 1rem;
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 500;
-  transition: var(--transition);
+/* Responsive styles for mobile devices */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 1rem; /* Further reduced padding */
+  }
+
+  .modal-title {
+    font-size: 1.125rem; /* Smaller font size for very small screens */
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    margin-top: 0.5rem; /* Ensure buttons stack vertically with space */
+  }
 }
 
-.file-link:hover {
-  text-decoration: underline;
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 0.75rem; /* Further reduced padding for very small screens */
+  }
+
+  .modal-title {
+    font-size: 1rem; /* Smaller font size for very small screens */
+  }
+
+  .modal-actions button {
+    font-size: 0.875rem; /* Adjusted button font size */
+    padding: 0.5rem; /* Adjusted button padding */
+  }
 }
 
-.file-notices {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #999;
-}
-
-.file-notices ul {
-  padding-left: 1.5rem;
-}
-
-.file-notices li {
-  margin-bottom: 0.5rem;
-}
 
 /* Footer styles */
 .footer {

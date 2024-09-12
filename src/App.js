@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { firebase, storage } from './firebase';
+import { storage } from './firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { FiCheckCircle, FiUploadCloud, FiInfo } from 'react-icons/fi';
@@ -123,7 +123,7 @@ function App() {
         <div className="navbar-links">
           <a href="About.html">About</a>
           <a href="PrivacyPolicy.html">Privacy Policy</a>
-          <a href="TermsOfService.html">Terms of Service</a>
+          <a href="TermsOfService.html">ToS</a>
         </div>
       </nav>
 
@@ -203,9 +203,7 @@ function App() {
           <button onClick={handleCopyLink} className="copy-button file-input-label">
             Copy Link
           </button> &nbsp;&nbsp;
-          <button onClick={() => setShowModal(false)} className="file-input-label">
-            Close
-          </button>
+       
         </div>
       </Modal>
 
@@ -214,8 +212,8 @@ function App() {
         isOpen={showCopyLinkModal}
         onClose={() => setShowCopyLinkModal(false)}
       >
-        <p>The file link has been copied to your clipboard. You can paste it anywhere to access your file.</p>
-        <button onClick={handleCloseAndRefresh} className="close-button">
+        <p>The file link has been copied to your clipboard. You can paste it anywhere to access your file.</p> <br></br><br></br>
+        <button onClick={handleCloseAndRefresh} className="close-button file-input-label"> 
   Close
 </button>
 
