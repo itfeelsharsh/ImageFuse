@@ -1,5 +1,5 @@
 
-![Banner Image](https://imagefuse.pages.dev/banner.png)
+![Banner Image](https://i.imgur.com/v2XujHT.jpeg)
 
 # ImageFuse
 
