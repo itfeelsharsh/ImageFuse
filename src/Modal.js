@@ -3,15 +3,13 @@ import './Modal.css';
 
 function Modal({ isOpen, onClose, title, children }) {
   const modalRef = useRef(null);
-  const agreeButtonRef = useRef(null);
+  const closeButtonRef = useRef(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (isOpen) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.key === 'Enter' && agreeButtonRef.current) {
-          agreeButtonRef.current.click();
+        if (e.key === 'Escape') {
+          onClose();
         }
       }
     };
@@ -19,24 +17,24 @@ function Modal({ isOpen, onClose, title, children }) {
     const handleFocus = (e) => {
       if (isOpen && !modalRef.current.contains(e.target)) {
         e.preventDefault();
-        agreeButtonRef.current.focus();
+        closeButtonRef.current.focus();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown, true);
+    document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('focus', handleFocus, true);
     document.body.style.overflow = isOpen ? 'hidden' : 'visible';
 
-    if (isOpen && agreeButtonRef.current) {
-      agreeButtonRef.current.focus();
+    if (isOpen && closeButtonRef.current) {
+      closeButtonRef.current.focus();
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown, true);
+      document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('focus', handleFocus, true);
       document.body.style.overflow = 'visible';
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -45,12 +43,10 @@ function Modal({ isOpen, onClose, title, children }) {
       <div className="modal" onClick={(e) => e.stopPropagation()} ref={modalRef}>
         <div className="modal-header">
           <h2 className="modal-title">{title}</h2>
+         
         </div>
         <div className="modal-content">
           {children}
-        </div>
-        <div className="modal-footer">
-       
         </div>
       </div>
     </div>

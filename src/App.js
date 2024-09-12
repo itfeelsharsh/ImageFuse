@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { storage } from './firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { FiCheckCircle, FiUploadCloud } from 'react-icons/fi';
+import { FiCheckCircle, FiUploadCloud, FiInfo } from 'react-icons/fi';
 import Modal from './Modal';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import logo from './logo.png'; // Assume you have a logo file
+import CONFIG from './config'; // Import the configuration
 
 const ALLOWED_TYPES = [
   'image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/webp', 'image/svg+xml',
@@ -20,7 +20,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({ message: '', type: '' });
   const [showModal, setShowModal] = useState(false);
-  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
   const [showCopyLinkModal, setShowCopyLinkModal] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
@@ -30,16 +29,29 @@ function App() {
     if (hasAgreed) {
       setHasAgreedToTerms(true);
     } else {
-      setShowPermissionsModal(true);
+      setNotification({ message: 'You must agree to the Terms of Service before uploading.', type: 'warning' });
     }
   }, []);
+
+  const handleCloseAndRefresh = () => {
+    setShowCopyLinkModal(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
+  };
 
   const handleFileChange = useCallback((e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       if (ALLOWED_TYPES.includes(selectedFile.type)) {
-        setFile(selectedFile);
-        setNotification({ message: '', type: '' });
+        // Check file size
+        if (selectedFile.size <= CONFIG.MAX_FILE_SIZE_MB * 1024 * 1024) {
+          setFile(selectedFile);
+          setNotification({ message: '', type: '' });
+        } else {
+          setFile(null);
+          setNotification({ message: `File is too large. Maximum size is ${CONFIG.MAX_FILE_SIZE_MB} MB.`, type: 'warning' });
+        }
       } else {
         setFile(null);
         setNotification({ message: 'Invalid file type. Please select a valid file.', type: 'warning' });
@@ -97,51 +109,77 @@ function App() {
   const handleAgreement = useCallback(() => {
     localStorage.setItem('hasAgreedToTerms', 'true');
     setHasAgreedToTerms(true);
-    setShowPermissionsModal(false);
+    setNotification({ message: '', type: '' });
   }, []);
 
   return (
-    <div className="app-container">
-      <Navbar />
-
-      <div className="uploader-card">
-        <h1 className="title">File Uploader</h1>
-
-        <div className="file-input-container">
-          <input 
-            type="file" 
-            id="file" 
-            onChange={handleFileChange} 
-            className="file-input" 
-            aria-label="Choose file" 
-          />
-          <label htmlFor="file" className="file-input-label">
-            Choose File
-          </label>
+    <div className="app">
+      <nav className="navbar">
+        <div className="navbar-logo">
+          <img src={logo} alt="Logo" className="logo" />
+          <span>ImageFuse</span>
         </div>
+        <div className="navbar-links">
+          <a href="About.html">About</a>
+          <a href="PrivacyPolicy.html">Privacy Policy</a>
+          <a href="TermsOfService.html">Terms of Service</a>
+        </div>
+      </nav>
 
-        {loading ? (
-          <div className="loading-container">
-            <div className="spinner"></div>
-            <span className="loading-text">Uploading...</span>
-            <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${uploadProgress}%` }}></div>
+      <main className="main-content">
+        <div className="uploader-card">
+          <h1 className="title">Upload Your File</h1>
+
+          <div className="file-input-container">
+            <input 
+              type="file" 
+              id="file" 
+              onChange={handleFileChange} 
+              className="file-input" 
+              aria-label="Choose file" 
+            />
+            <label htmlFor="file" className="file-input-label">
+              <FiUploadCloud className="icon" />
+              Choose File
+            </label>
+          </div>
+
+          {file && (
+            <div className="file-info">
+              <FiInfo className="icon" />
+              <span>{file.name}</span>
             </div>
-          </div>
-        ) : (
-          <button onClick={handleUpload} className="upload-button">
-            <FiUploadCloud className="button-icon" />
-            Upload
-          </button>
-        )}
+          )}
 
-        {notification.message && (
-          <div className={`notification ${notification.type}`}>
-            <FiCheckCircle className="notification-icon" />
-            <span>{notification.message}</span>
-          </div>
-        )}
-      </div>
+          {loading ? (
+            <div className="loading-container">
+              <div className="spinner"></div>
+              <span className="loading-text">Uploading...</span>
+              <div className="progress-bar">
+                <div className="progress-fill" style={{ width: `${uploadProgress}%` }}></div>
+              </div>
+            </div>
+          ) : (
+            <button onClick={handleUpload} className="upload-button" disabled={!file}>
+              <FiUploadCloud className="icon" />
+              Upload
+            </button>
+          )}
+
+          {notification.message && (
+            <div className={`notification ${notification.type}`}>
+              <FiCheckCircle className="icon" />
+              <span>{notification.message}</span>
+            </div>
+          )}
+        </div>
+      </main>
+
+      <footer className="footer">
+        <div className="footer-content">
+          <p>Made with ❤️ by Harsh Banker using ReactJS and Firebase</p>
+        </div>
+      </footer>
 
       <Modal
         title="File Uploaded Successfully"
@@ -160,9 +198,14 @@ function App() {
             <li>This file is private and can only be accessed through this unique link.</li>
           </ul>
         </div>
-        <button onClick={handleCopyLink} className="copy-button">
-          Copy Link
-        </button>
+        <div className="modal-actions">
+          <button onClick={handleCopyLink} className="copy-button file-input-label">
+            Copy Link
+          </button> &nbsp;&nbsp;
+          <button onClick={() => setShowModal(false)} className="file-input-label">
+            Close
+          </button>
+        </div>
       </Modal>
 
       <Modal
@@ -171,21 +214,30 @@ function App() {
         onClose={() => setShowCopyLinkModal(false)}
       >
         <p>The file link has been copied to your clipboard. You can paste it anywhere to access your file.</p>
+        <button onClick={handleCloseAndRefresh} className="close-button">
+  Close
+</button>
+
       </Modal>
 
       <Modal
         title="Welcome to File Uploader"
-        isOpen={showPermissionsModal}
+        isOpen={!hasAgreedToTerms}
         onClose={() => {}}
       >
-        <p>Before you begin, please review and agree to our Terms of Service and Privacy Policy.</p>
-        <p>By agreeing, you consent to the collection and use of your data as outlined in our Privacy Policy.</p>
-        <button onClick={handleAgreement} className="agreement-button">
+        <p>Before you proceed, please review and agree to our Terms of Service and Privacy Policy.</p>
+        <p>By agreeing, you consent to the collection and use of your data as described in our Privacy Policy.</p>
+        <ol> <br></br>
+          <li>We reserve the right to remove files from our server at our discretion.</li>
+          <li>Once uploaded, files cannot be deleted.</li>
+          <li>After a successful upload, you will receive a link to access your file. Please save this link, as it is necessary to access your file. Without it, the file cannot be retrieved.</li>
+          <li>Executable files (e.g., .apk, .dmg, .exe, .tar) are not permitted.</li>
+          <li>Please ensure your file complies with all applicable laws and regulations. We do not accept responsibility for any legal issues arising from file content.</li>
+        </ol> <br></br>
+        <button onClick={handleAgreement} className="agreement-button file-input-label">
           I Agree
         </button>
       </Modal>
-
-      <Footer />
     </div>
   );
 }
