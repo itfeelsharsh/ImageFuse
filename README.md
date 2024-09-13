@@ -1,19 +1,8 @@
 
-![Banner Image](https://i.imgur.com/v2XujHT.jpeg)
-
 # ImageFuse
 
 ImageFuse is a secure file upload and sharing application built using ReactJS and Firebase. This repository contains the source code for the ImageFuse web application.
 
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Setup](#setup)
-- [Firebase Configuration](#firebase-configuration)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -21,8 +10,9 @@ ImageFuse is a secure file upload and sharing application built using ReactJS an
 - Easy-to-use interface
 - Firebase authentication and storage integration
 - Responsive design
+- Chnage Maximum Allowed File Size
 
-## Installation
+## Installation & Setup
 
 Follow these steps to get your development environment set up:
 
@@ -95,21 +85,7 @@ Follow these steps to get your development environment set up:
 
    The app will be available at `http://localhost:3000`.
 
-## Usage
 
-- Navigate to different pages using the navigation bar.
-- Upload files securely and manage them through the user interface.
-- Contact support or view terms of service and privacy policy through respective links.
-
-## Contributing
-
-If you want to contribute to ImageFuse, please follow these guidelines:
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request.
 
 ## License
 
